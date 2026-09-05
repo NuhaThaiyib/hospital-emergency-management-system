@@ -15,23 +15,26 @@ CIT300 - Data Structures and Algorithms, Individual Mid Assignment
 | Patient Visit History | Singly Linked List | Store each patient's past hospital visits individually |
 
 ## Project Structure
+## Project Structure
+
+```
 src/
 ├── app/
-│ └── Main.java — Entry point, menu-driven interface
+│   └── Main.java              — Entry point, menu-driven interface
 ├── model/
-│ ├── Patient.java — Patient data model
-│ ├── PatientNode.java — Node used in the BST
-│ ├── PatientQueueNode.java — Node used in the Emergency Queue
-│ ├── TreatmentRecord.java — Treatment record data model
-│ ├── TreatmentStackNode.java— Node used in the Treatment Stack
-│ ├── Visit.java — Visit data model
-│ └── VisitNode.java — Node used in the Visit History linked list
+│   ├── Patient.java           — Patient data model
+│   ├── PatientNode.java       — Node used in the BST
+│   ├── PatientQueueNode.java  — Node used in the Emergency Queue
+│   ├── TreatmentRecord.java   — Treatment record data model
+│   ├── TreatmentStackNode.java— Node used in the Treatment Stack
+│   ├── Visit.java             — Visit data model
+│   └── VisitNode.java         — Node used in the Visit History linked list
 └── datastructures/
-├── PatientBST.java — Binary Search Tree implementation
-├── EmergencyQueue.java — Queue implementation
-├── TreatmentStack.java — Stack implementation
-└── VisitHistory.java — Singly Linked List implementation
-
+    ├── PatientBST.java        — Binary Search Tree implementation
+    ├── EmergencyQueue.java    — Queue implementation
+    ├── TreatmentStack.java    — Stack implementation
+    └── VisitHistory.java      — Singly Linked List implementation
+```
 ## How to Run
 1. Clone this repository.
 2. Open the project in Eclipse (or any Java IDE).
