@@ -1,6 +1,7 @@
 package app;
 
 import datastructures.PatientBST;
+import datastructures.EmergencyQueue;
 import model.Patient;
 
 public class Main {
@@ -31,11 +32,33 @@ public class Main {
         } else {
             System.out.println("Patient not found.");
         }
-    
 
-    System.out.println("\n=== Deleting Patient ID 103 ===");
-    patientTree.delete(103);
-    System.out.println("=== All patients after deletion ===");
-    patientTree.displayInOrder();
+        System.out.println("\n=== Deleting Patient ID 103 ===");
+        patientTree.delete(103);
+        System.out.println("=== All patients after deletion ===");
+        patientTree.displayInOrder();
+
+        System.out.println("\n\n=== TESTING EMERGENCY QUEUE ===");
+        EmergencyQueue emergencyQueue = new EmergencyQueue();
+
+        emergencyQueue.enqueue(new Patient(201, "Saman Kumara", 22, "0711111111", "Broken arm"));
+        emergencyQueue.enqueue(new Patient(202, "Priya Raj", 34, "0722222222", "High fever"));
+        emergencyQueue.enqueue(new Patient(203, "Farah Ismail", 50, "0733333333", "Chest pain"));
+
+        emergencyQueue.display();
+
+        System.out.println("\n=== Treating next patient ===");
+        Patient treated = emergencyQueue.dequeue();
+        System.out.println("Now treating: " + treated);
+
+        System.out.println("\n=== Queue after one dequeue ===");
+        emergencyQueue.display();
+
+        System.out.println("\n=== Emptying the queue completely ===");
+        emergencyQueue.dequeue();
+        emergencyQueue.dequeue();
+
+        System.out.println("\n=== Trying to dequeue from an empty queue ===");
+        emergencyQueue.dequeue();
     }
 }
