@@ -5,6 +5,7 @@ import datastructures.EmergencyQueue;
 import datastructures.TreatmentStack;
 import model.Patient;
 import model.TreatmentRecord;
+import model.Visit;
 
 public class Main {
     public static void main(String[] args) {
@@ -85,5 +86,25 @@ public class Main {
 
         System.out.println("\n=== Trying to pop from an empty stack ===");
         treatmentStack.pop();
+
+        System.out.println("\n\n=== TESTING PATIENT VISIT HISTORY (LINKED LIST) ===");
+        Patient amal = patientTree.search(101);
+
+        amal.getVisitHistory().addVisit(new Visit(1, "2025-01-10", "Dr. Perera", "Flu", "Rest and medication"));
+        amal.getVisitHistory().addVisit(new Visit(2, "2025-03-22", "Dr. Silva", "Sprained ankle", "Bandage applied"));
+        amal.getVisitHistory().addVisit(new Visit(3, "2025-07-05", "Dr. Fernando", "Check-up", "No issues found"));
+
+        System.out.println("\n=== Amal's visit history ===");
+        amal.getVisitHistory().display();
+
+        System.out.println("\n=== Searching for Visit ID 2 ===");
+        Visit foundVisit = amal.getVisitHistory().searchVisit(2);
+        System.out.println(foundVisit != null ? foundVisit : "Visit not found.");
+
+        System.out.println("\n=== Removing Visit ID 1 ===");
+        amal.getVisitHistory().removeVisit(1);
+
+        System.out.println("\n=== Amal's visit history after removal ===");
+        amal.getVisitHistory().display();
     }
 }

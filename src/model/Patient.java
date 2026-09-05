@@ -1,11 +1,14 @@
 package model;
 
+import datastructures.VisitHistory;
+
 public class Patient {
     private int patientId;
     private String name;
     private int age;
     private String contactNumber;
     private String medicalCondition;
+    private VisitHistory visitHistory = new VisitHistory();
 
     public Patient(int patientId, String name, int age, String contactNumber, String medicalCondition) {
         this.patientId = patientId;
@@ -33,6 +36,10 @@ public class Patient {
 
     public String getMedicalCondition() {
         return medicalCondition;
+    }
+
+    public VisitHistory getVisitHistory() {
+        return visitHistory;
     }
 
     @Override
