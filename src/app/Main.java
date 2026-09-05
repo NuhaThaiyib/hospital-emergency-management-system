@@ -1,5 +1,6 @@
 package app;
 
+import java.util.Scanner;
 import datastructures.PatientBST;
 import datastructures.EmergencyQueue;
 import datastructures.TreatmentStack;
@@ -8,103 +9,153 @@ import model.TreatmentRecord;
 import model.Visit;
 
 public class Main {
+    static PatientBST patientTree = new PatientBST();
+    static EmergencyQueue emergencyQueue = new EmergencyQueue();
+    static TreatmentStack treatmentStack = new TreatmentStack();
+    static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        PatientBST patientTree = new PatientBST();
+        int choice;
 
-        // Insert some patients
-        patientTree.insert(new Patient(101, "Amal Perera", 45, "0771234567", "Chest pain"));
-        patientTree.insert(new Patient(105, "Nimal Silva", 30, "0777654321", "Fracture"));
-        patientTree.insert(new Patient(103, "Kamala Fernando", 60, "0712345678", "Diabetes"));
-        patientTree.insert(new Patient(110, "Sunil Bandara", 25, "0765432109", "Allergy"));
+        do {
+            printMenu();
+            choice = Integer.parseInt(scanner.nextLine());
 
-        System.out.println("=== All patients (ascending by ID) ===");
-        patientTree.displayInOrder();
+            switch (choice) {
+                case 1: addPatient(); break;
+                case 2: searchPatient(); break;
+                case 3: deletePatient(); break;
+                case 4: patientTree.displayInOrder(); break;
+                case 5: addToQueue(); break;
+                case 6: treatNextPatient(); break;
+                case 7: emergencyQueue.display(); break;
+                case 8: completeTreatment(); break;
+                case 9: viewLastTreatment(); break;
+                case 10: treatmentStack.display(); break;
+                case 11: addVisit(); break;
+                case 12: viewVisitHistory(); break;
+                case 0: System.out.println("Exiting system. Goodbye!"); break;
+                default: System.out.println("Invalid choice, try again.");
+            }
 
-        System.out.println("\n=== Searching for Patient ID 103 ===");
-        Patient found = patientTree.search(103);
-        if (found != null) {
-            System.out.println("Found: " + found);
+        } while (choice != 0);
+
+        scanner.close();
+    }
+
+    static void printMenu() {
+        System.out.println("\n=== MINI HOSPITAL EMERGENCY MANAGEMENT SYSTEM ===");
+        System.out.println("1. Add New Patient");
+        System.out.println("2. Search Patient by ID");
+        System.out.println("3. Delete Patient");
+        System.out.println("4. Display All Patients (In-Order)");
+        System.out.println("5. Add Patient to Emergency Queue");
+        System.out.println("6. Treat Next Patient (Dequeue)");
+        System.out.println("7. Display Emergency Queue");
+        System.out.println("8. Complete Treatment (Push to Stack)");
+        System.out.println("9. View/Remove Last Treatment (Pop from Stack)");
+        System.out.println("10. Display Treatment History");
+        System.out.println("11. Add Visit to Patient History");
+        System.out.println("12. View Patient Visit History");
+        System.out.println("0. Exit");
+        System.out.print("Enter your choice: ");
+    }
+
+    static void addPatient() {
+        System.out.print("Enter Patient ID: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        System.out.print("Enter Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter Age: ");
+        int age = Integer.parseInt(scanner.nextLine());
+        System.out.print("Enter Contact Number: ");
+        String contact = scanner.nextLine();
+        System.out.print("Enter Medical Condition: ");
+        String condition = scanner.nextLine();
+
+        patientTree.insert(new Patient(id, name, age, contact, condition));
+        System.out.println("Patient added successfully.");
+    }
+
+    static void searchPatient() {
+        System.out.print("Enter Patient ID to search: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        Patient p = patientTree.search(id);
+        System.out.println(p != null ? p : "Patient not found.");
+    }
+
+    static void deletePatient() {
+        System.out.print("Enter Patient ID to delete: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        patientTree.delete(id);
+    }
+
+    static void addToQueue() {
+        System.out.print("Enter Patient ID (must already exist): ");
+        int id = Integer.parseInt(scanner.nextLine());
+        Patient p = patientTree.search(id);
+        if (p == null) {
+            System.out.println("Patient not found. Add the patient first.");
         } else {
-            System.out.println("Patient not found.");
+            emergencyQueue.enqueue(p);
         }
+    }
 
-        System.out.println("\n=== Searching for Patient ID 999 (should not exist) ===");
-        Patient notFound = patientTree.search(999);
-        if (notFound != null) {
-            System.out.println("Found: " + notFound);
-        } else {
-            System.out.println("Patient not found.");
-        }
-
-        System.out.println("\n=== Deleting Patient ID 103 ===");
-        patientTree.delete(103);
-        System.out.println("=== All patients after deletion ===");
-        patientTree.displayInOrder();
-
-        System.out.println("\n\n=== TESTING EMERGENCY QUEUE ===");
-        EmergencyQueue emergencyQueue = new EmergencyQueue();
-
-        emergencyQueue.enqueue(new Patient(201, "Saman Kumara", 22, "0711111111", "Broken arm"));
-        emergencyQueue.enqueue(new Patient(202, "Priya Raj", 34, "0722222222", "High fever"));
-        emergencyQueue.enqueue(new Patient(203, "Farah Ismail", 50, "0733333333", "Chest pain"));
-
-        emergencyQueue.display();
-
-        System.out.println("\n=== Treating next patient ===");
+    static void treatNextPatient() {
         Patient treated = emergencyQueue.dequeue();
-        System.out.println("Now treating: " + treated);
+        if (treated != null) {
+            System.out.println("Now treating: " + treated);
+        }
+    }
 
-        System.out.println("\n=== Queue after one dequeue ===");
-        emergencyQueue.display();
+    static void completeTreatment() {
+        System.out.print("Enter Patient ID: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        Patient p = patientTree.search(id);
+        if (p == null) {
+            System.out.println("Patient not found.");
+            return;
+        }
+        System.out.print("Enter treatment details: ");
+        String details = scanner.nextLine();
+        treatmentStack.push(new TreatmentRecord(id, p.getName(), details));
+    }
 
-        System.out.println("\n=== Emptying the queue completely ===");
-        emergencyQueue.dequeue();
-        emergencyQueue.dequeue();
+    static void viewLastTreatment() {
+        TreatmentRecord record = treatmentStack.pop();
+        System.out.println(record != null ? "Removed: " + record : "");
+    }
 
-        System.out.println("\n=== Trying to dequeue from an empty queue ===");
-        emergencyQueue.dequeue();
+    static void addVisit() {
+        System.out.print("Enter Patient ID: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        Patient p = patientTree.search(id);
+        if (p == null) {
+            System.out.println("Patient not found.");
+            return;
+        }
+        System.out.print("Enter Visit ID: ");
+        int visitId = Integer.parseInt(scanner.nextLine());
+        System.out.print("Enter Visit Date: ");
+        String date = scanner.nextLine();
+        System.out.print("Enter Doctor Name: ");
+        String doctor = scanner.nextLine();
+        System.out.print("Enter Diagnosis: ");
+        String diagnosis = scanner.nextLine();
+        System.out.print("Enter Treatment: ");
+        String treatment = scanner.nextLine();
 
-        System.out.println("\n\n=== TESTING TREATMENT HISTORY STACK ===");
-        TreatmentStack treatmentStack = new TreatmentStack();
+        p.getVisitHistory().addVisit(new Visit(visitId, date, doctor, diagnosis, treatment));
+    }
 
-        treatmentStack.push(new TreatmentRecord(201, "Saman Kumara", "Arm casted and bandaged"));
-        treatmentStack.push(new TreatmentRecord(202, "Priya Raj", "Given fever medication"));
-        treatmentStack.push(new TreatmentRecord(203, "Farah Ismail", "ECG performed, stable"));
-
-        treatmentStack.display();
-
-        System.out.println("\n=== Removing most recent treatment record ===");
-        TreatmentRecord popped = treatmentStack.pop();
-        System.out.println("Removed: " + popped);
-
-        System.out.println("\n=== Stack after one pop ===");
-        treatmentStack.display();
-
-        System.out.println("\n=== Emptying the stack completely ===");
-        treatmentStack.pop();
-        treatmentStack.pop();
-
-        System.out.println("\n=== Trying to pop from an empty stack ===");
-        treatmentStack.pop();
-
-        System.out.println("\n\n=== TESTING PATIENT VISIT HISTORY (LINKED LIST) ===");
-        Patient amal = patientTree.search(101);
-
-        amal.getVisitHistory().addVisit(new Visit(1, "2025-01-10", "Dr. Perera", "Flu", "Rest and medication"));
-        amal.getVisitHistory().addVisit(new Visit(2, "2025-03-22", "Dr. Silva", "Sprained ankle", "Bandage applied"));
-        amal.getVisitHistory().addVisit(new Visit(3, "2025-07-05", "Dr. Fernando", "Check-up", "No issues found"));
-
-        System.out.println("\n=== Amal's visit history ===");
-        amal.getVisitHistory().display();
-
-        System.out.println("\n=== Searching for Visit ID 2 ===");
-        Visit foundVisit = amal.getVisitHistory().searchVisit(2);
-        System.out.println(foundVisit != null ? foundVisit : "Visit not found.");
-
-        System.out.println("\n=== Removing Visit ID 1 ===");
-        amal.getVisitHistory().removeVisit(1);
-
-        System.out.println("\n=== Amal's visit history after removal ===");
-        amal.getVisitHistory().display();
+    static void viewVisitHistory() {
+        System.out.print("Enter Patient ID: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        Patient p = patientTree.search(id);
+        if (p == null) {
+            System.out.println("Patient not found.");
+            return;
+        }
+        p.getVisitHistory().display();
     }
 }
