@@ -31,5 +31,11 @@ public class Main {
         } else {
             System.out.println("Patient not found.");
         }
+    
+
+    System.out.println("\n=== Deleting Patient ID 103 ===");
+    patientTree.delete(103);
+    System.out.println("=== All patients after deletion ===");
+    patientTree.displayInOrder();
     }
 }
