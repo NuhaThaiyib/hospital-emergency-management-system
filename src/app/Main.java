@@ -2,7 +2,9 @@ package app;
 
 import datastructures.PatientBST;
 import datastructures.EmergencyQueue;
+import datastructures.TreatmentStack;
 import model.Patient;
+import model.TreatmentRecord;
 
 public class Main {
     public static void main(String[] args) {
@@ -60,5 +62,28 @@ public class Main {
 
         System.out.println("\n=== Trying to dequeue from an empty queue ===");
         emergencyQueue.dequeue();
+
+        System.out.println("\n\n=== TESTING TREATMENT HISTORY STACK ===");
+        TreatmentStack treatmentStack = new TreatmentStack();
+
+        treatmentStack.push(new TreatmentRecord(201, "Saman Kumara", "Arm casted and bandaged"));
+        treatmentStack.push(new TreatmentRecord(202, "Priya Raj", "Given fever medication"));
+        treatmentStack.push(new TreatmentRecord(203, "Farah Ismail", "ECG performed, stable"));
+
+        treatmentStack.display();
+
+        System.out.println("\n=== Removing most recent treatment record ===");
+        TreatmentRecord popped = treatmentStack.pop();
+        System.out.println("Removed: " + popped);
+
+        System.out.println("\n=== Stack after one pop ===");
+        treatmentStack.display();
+
+        System.out.println("\n=== Emptying the stack completely ===");
+        treatmentStack.pop();
+        treatmentStack.pop();
+
+        System.out.println("\n=== Trying to pop from an empty stack ===");
+        treatmentStack.pop();
     }
 }
