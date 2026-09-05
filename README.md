@@ -15,7 +15,6 @@ CIT300 - Data Structures and Algorithms, Individual Mid Assignment
 | Patient Visit History | Singly Linked List | Store each patient's past hospital visits individually |
 
 ## Project Structure
-## Project Structure
 
 ```
 src/
